@@ -1,0 +1,3 @@
+Fitxer de text de joc de proves de la primera practica de sistemes distribuits.
+Lobjectiu era dissenyar i implementar un gestor de clusters capac dexecutar diferents jobs en paralel. 
+Hem utilitzat el middleware estandard XMLRPC i Redis.

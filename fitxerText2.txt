@@ -1,0 +1,2 @@
+Per validar la primera practica de sistemes distribuits hem fet dos programes per tal de verificar que tot funcionava correctament. 
+En cas de tenir mes dun fitxer en el countingwords es sumaven les paraules que estaven que estaven repetides en els diferents fitxers i en el wordcount es sumaven el total de paraules de cada fitxer
