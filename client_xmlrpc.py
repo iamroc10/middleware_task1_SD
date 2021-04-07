@@ -3,7 +3,7 @@ import time
 
 proxy = xmlrpc.client.ServerProxy('http://localhost:9000')
 
-
+# Funció per tal de cridar la funció corresponent i demanar els inputs necessaris
 def switch(num):
     result = 0
     if (num == 1): result = proxy.createWorker()
@@ -35,7 +35,7 @@ def switch(num):
     
     return result
 
-
+# Inicialització inicial que anirà sortint cada cop que finalitza una tasca fins que s'escrigui el número 6
 def inicialitzacio():
     print('\n1. Create Worker')
     print('2. List Workers')
@@ -49,6 +49,7 @@ def inicialitzacio():
 cond = 7
 print('CREACIÓ WORKER AUTOMÀTIC')
 print(proxy.createWorker())
+
 while (cond != -1):
     inicialitzacio()
     case = int(input("Escull una opció: "))
