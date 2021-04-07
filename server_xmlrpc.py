@@ -62,19 +62,20 @@ def startWorker(w_id):
 def tractamentCua(task, files):
     global cua
     global r
+
     i=0
-    files = files.split('*')
-
-    while (i < len(files)):
-        if (i < 1):
-            r.incr("counter")
-            r.set(r.get("counter"), 0)
-        arg = str(task) + ':' + str(files[i]) + ':' + str(r.get("counter")) + ':' + str(i)
-        r.rpush(cua, arg)
-        i = i + 1
-
-    return (r.get("counter"))
-
+    fitxers = files.split('*')
+    if (files != ''):
+        while (i < len(fitxers)):
+            if (i < 1):
+                r.incr("counter")
+                r.set(r.get("counter"), 0)
+            arg = str(task) + ':' + str(fitxers[i]) + ':' + str(r.get("counter")) + ':' + str(i)
+            r.rpush(cua, arg)
+            i = i + 1
+        return (r.get("counter"))
+    else: 
+        return 0
 
 # Funció que crea un procés i crida a la funció startWorker().
 def createWorker():
@@ -177,52 +178,53 @@ def tractamentLlista(llista):
 # Funció que retorna el resultat del job passat per paràmetre.
 def getResult(job_id, task):
     global r
+
     llista = []
+    if (job_id != '0'):
+        result = r.get(job_id)
+        r.delete(job_id)
+        result = str(result)
+        result = result[2:len(result)-1]
+        i = 0
+        suma = 0
 
-    result = r.get(job_id)
-    r.delete(job_id)
-    result = str(result)
-    result = result[2:len(result)-1]
-    i = 0
-    suma = 0
+        if (result.find("*") > 0):
+            if (task == 'countingWords'):
+                line = result.split('*')
 
-    if (result.find("*") > 0):
-        if (task == 'countingWords'):
-            line = result.split('*')
+                while (i < len(line)):
+                    suma = int(line[i]) + suma
+                    i = i + 1
+                result = suma
 
-            while (i < len(line)):
-                suma = int(line[i]) + suma
-                i = i + 1
-            result = suma
+            elif (task == 'wordCount'):
+                result =  result[1:len(result)-1]            
+                result = result.replace('}*{', ', ')
 
-        elif (task == 'wordCount'):
-            result =  result[1:len(result)-1]            
-            result = result.replace('}*{', ', ')
+                line = result.split(',')
+                i = 0
+                while (i < len(line)):
+                    line1 = str(line[i])
+                    aux = line1.split(':')
+                    key = aux[0]
 
-            line = result.split(',')
-            i = 0
-            while (i < len(line)):
-                line1 = str(line[i])
-                aux = line1.split(':')
-                key = aux[0]
+                    if (i == 0):
+                        key = key[1:len(key)-1]
+                    else:
+                        key = key[2:len(key)-1]
 
-                if (i == 0):
-                    key = key[1:len(key)-1]
-                else:
-                    key = key[2:len(key)-1]
+                    value = aux[1]
+                    value =  value[1:]
 
-                value = aux[1]
-                value =  value[1:]
-
-                llista.append([key, value])
-                i = i + 1
+                    llista.append([key, value])
+                    i = i + 1
             
-            i = 0
-            
-            result = tractamentLlista(llista)
-
-    return (result)
-
+                i = 0
+                result = tractamentLlista(llista)
+        return (result)
+    else:
+        result = '0 fitxers'
+        return (result)
 
  #MAIN
 if __name__ == '__main__':
