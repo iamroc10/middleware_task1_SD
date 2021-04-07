@@ -83,10 +83,9 @@ def createWorker():
 
     proc = Process(target=startWorker, args=(WORKER_ID,))
     proc.start()
-
+    
     WORKERS[WORKER_ID] = proc
     WORKER_ID =  WORKER_ID+1
-
     return ('CREATED WORKER = ',WORKER_ID)
 
 
@@ -94,12 +93,12 @@ def createWorker():
 def deleteWorker(cont):
     global WORKERS
     global WORKER_ID
-
-    proc1 = WORKERS[cont]
+    
+    proc1 = WORKERS[cont-1]
     proc1.terminate()
     proc1.is_alive()
     WORKERS.pop(cont-1)
-
+    
     return ('DELETED WORKER= ',cont)
 
 
