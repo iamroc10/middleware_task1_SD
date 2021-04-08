@@ -45,7 +45,7 @@ def inicialitzacio():
     print('6. EXIT\n')
 
 
-
+# MAIN
 cond = 7
 print('CREACIÓ WORKER AUTOMÀTIC')
 print(proxy.createWorker())
