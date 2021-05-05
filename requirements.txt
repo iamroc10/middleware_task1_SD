@@ -1,7 +1,2 @@
-import os
-import redis
-import logging
-import time
-import sys
-import SimpleXMLRPCServer
-import Process
+redis == 3.5.3
+logging == 0.5.1.2
